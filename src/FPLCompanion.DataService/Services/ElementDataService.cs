@@ -34,7 +34,16 @@ namespace FPLCompanion.DataService.Services
             await _elementsCollection.ReplaceOneAsync(x => x.id == id, updatedBook, new UpdateOptions { IsUpsert = true });
         }
 
+        public async Task UpdateMany(List<Element> elements)
+        {
+            for (int i = 0; i < elements.Count; i++)
+            {
+                var element = elements[i];
+                await UpdateAsync(element.id, element);
+            }
+        }
+
         public async Task RemoveAsync(string id) =>
-        await _elementsCollection.DeleteOneAsync(x => x._Id == id);
+            await _elementsCollection.DeleteOneAsync(x => x._Id == id);
     }
 }

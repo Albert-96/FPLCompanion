@@ -1,29 +1,33 @@
 ﻿using AutoMapper;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Data.ResponseModel;
-using FPLCompanion.Data.Entities;
 using FPLCompanion.Data.ViewModels;
 using FPLCompanion.DataService.Abstractions;
 using FPLCompanion.Dependencies;
 using FPLCompanion.Dto;
 using MediatR;
 using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
 {
-    public class GetAllPlayerDataQuery : IRequest<LoadResult>
+    public class GetGoalkeeperDataQuery : IRequest<LoadResult>
     {
         public DataSourceLoadOptions loadOptions { get; set; }
     }
 
-    public class GetAllPlayerDataQueryHandler : IRequestHandler<GetAllPlayerDataQuery, LoadResult>
+    public class GetGoalkeeperDataQueryHandler : IRequestHandler<GetGoalkeeperDataQuery, LoadResult>
     {
         private readonly IElementDataService _elementDataService;
         private readonly ITeamDataService _teamDataService;
         private readonly IElementTypeDataService _elementTypeDataService;
         private readonly IMapper _mapper;
 
-        public GetAllPlayerDataQueryHandler(
+        public GetGoalkeeperDataQueryHandler(
             IElementDataService elementDataService,
             ITeamDataService teamDataService,
             IElementTypeDataService elementTypeDataService,
@@ -35,15 +39,16 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
             _mapper = mapper;
         }
 
-        public async Task<LoadResult> Handle(GetAllPlayerDataQuery request, CancellationToken cancellationToken)
+        public async Task<LoadResult> Handle(GetGoalkeeperDataQuery request, CancellationToken cancellationToken)
         {
             request.loadOptions.PrimaryKey = new[] { "id" };
             request.loadOptions.PaginateViaPrimaryKey = true;
 
-            var playerEntities = await 
+            var playerEntities = await
                 (
                     _elementDataService._elementsCollection.
                         Aggregate().
+                        Match(x => x.element_type == (short)Position.Goalkeeper).
                         Lookup(_teamDataService._teamsCollection, x => x.team_code, y => y.code, (ElementAggregate p) => p.teamsInfo).
                         Lookup(_elementTypeDataService._elementTypeCollection, x => x.element_type, y => y.id, (ElementAggregate p) => p.positionsInfo)
                 ).ToListAsync();

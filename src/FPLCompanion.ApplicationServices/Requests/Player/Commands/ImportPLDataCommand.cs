@@ -1,30 +1,36 @@
 ﻿using AutoMapper;
 using FPLCompanion.Data.Entities;
-using FPLCompanion.Data.ViewModels;
 using FPLCompanion.DataService.Abstractions;
+using FPLCompanion.Dto;
 using MediatR;
 using Newtonsoft.Json;
 
 namespace FPLCompanion.ApplicationServices.Requests.Player.Commands
 {
-    public class ImportPlayerDataCommand : IRequest<int>
+    public class ImportPLDataCommand : IRequest<int>
     {
     }
 
-    public class ImportPlayerDataCommandHandler : IRequestHandler<ImportPlayerDataCommand, int>
+    public class ImportPLDataCommandHandler : IRequestHandler<ImportPLDataCommand, int>
     {
         private readonly IElementDataService _elementDataService;
+        private readonly ITeamDataService _teamDataService;
+        private readonly IElementTypeDataService _elemenTypeDataService;
         private readonly IMapper _mapper;
 
-        public ImportPlayerDataCommandHandler(
+        public ImportPLDataCommandHandler(
             IElementDataService elementDataService,
+            ITeamDataService teamDataService,
+            IElementTypeDataService elemenTypeDataService,
             IMapper mapper)
         {
             _elementDataService = elementDataService;
+            _teamDataService = teamDataService;
+            _elemenTypeDataService = elemenTypeDataService;
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(ImportPlayerDataCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(ImportPLDataCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -32,8 +38,16 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Commands
                 client.DefaultRequestHeaders.Accept.Clear();
                 var response = await client.GetAsync("https://fantasy.premierleague.com/api/bootstrap-static/");
                 RootDto deserializedClass = JsonConvert.DeserializeObject<RootDto>(await response.Content.ReadAsStringAsync());
+
                 var players = _mapper.Map<IEnumerable<ElementDto>, IEnumerable<Element>>(deserializedClass.elements).ToList();
-                await _elementDataService.InsertMany(players);
+                await _elementDataService.UpdateMany(players);
+
+                var teams = _mapper.Map<IEnumerable<TeamDto>, IEnumerable<Team>>(deserializedClass.teams).ToList();
+                await _teamDataService.UpdateMany(teams);
+
+                var elementTypes = _mapper.Map<IEnumerable<ElementTypeDto>, IEnumerable<ElementType>>(deserializedClass.element_types).ToList();
+                await _elemenTypeDataService.UpdateMany(elementTypes);
+
                 return 1;
             }
             catch (Exception ex)

@@ -1,11 +1,13 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace FPLCompanion.Data.Entities
+namespace FPLCompanion.Dto
 {
-    public class Element
+    public class ElementDto
     {
-        [BsonId]
         public string? _Id { get; set; }
         public int? chance_of_playing_next_round { get; set; }
         public int? chance_of_playing_this_round { get; set; }
@@ -74,5 +76,39 @@ namespace FPLCompanion.Data.Entities
         public string direct_freekicks_text { get; set; }
         public int? penalties_order { get; set; }
         public string penalties_text { get; set; }
+        public TeamDto teamInfo { get; set; }
+        public ElementTypeDto positionInfo { get; set; }
+
+        public float current_cost
+        {
+            get
+            {
+                return (float)now_cost / (float)10;
+            }
+        }
+
+        public string chance_of_playing_next_round_string
+        {
+            get
+            {
+                return chance_of_playing_next_round + " %";
+            }
+        }
+
+        public string chance_of_playing_this_round_string
+        {
+            get
+            {
+                return chance_of_playing_this_round + " %";
+            }
+        }
+
+        public string selected_by_percent_string
+        {
+            get
+            {
+                return selected_by_percent + " %";
+            }
+        }
     }
 }

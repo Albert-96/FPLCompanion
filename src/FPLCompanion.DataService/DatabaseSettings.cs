@@ -10,5 +10,7 @@
     public static class DatabaseTables
     {
         public const string Element = "Element";
+        public const string Team = "Team";
+        public const string ElementType = "ElementType";
     }
 }

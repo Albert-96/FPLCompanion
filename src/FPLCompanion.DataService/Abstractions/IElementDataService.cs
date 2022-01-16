@@ -14,6 +14,8 @@ namespace FPLCompanion.DataService.Abstractions
 
         Task UpdateAsync(int id, Element player);
 
+        Task UpdateMany(List<Element> elements);
+
         Task CreateAsync(Element player);
 
         Task InsertMany(List<Element> players);

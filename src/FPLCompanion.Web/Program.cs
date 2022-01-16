@@ -13,12 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<DatabaseSettings>(
     builder.Configuration.GetSection("DatabaseSettings"));
 builder.Services.AddSingleton(ConfigureMapper());
-builder.Services.AddMediatR(typeof(ImportPlayerDataCommand).Assembly);
+builder.Services.AddMediatR(typeof(ImportPLDataCommand).Assembly);
 
 builder.Services.AddScoped<IElementDataService, ElementDataService>();
+builder.Services.AddScoped<ITeamDataService, TeamDataService>();
+builder.Services.AddScoped<IElementTypeDataService, ElementTypeDataService>();
 
 builder.Services.AddControllers();
-//builder.Services.AddHostedService<PremierLeagueApiWorker>();
+builder.Services.AddHostedService<PremierLeagueApiWorker>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -32,6 +34,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(x => x
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
 
 app.UseHttpsRedirection();
 

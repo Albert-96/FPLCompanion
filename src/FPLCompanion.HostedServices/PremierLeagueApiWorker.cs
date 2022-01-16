@@ -1,6 +1,4 @@
 ﻿using FPLCompanion.ApplicationServices.Requests.Player.Commands;
-using FPLCompanion.Data.ViewModels;
-using FPLCompanion.DataService.Services;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,10 +27,8 @@ namespace FPLCompanion.HostedServices
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var mediator =
-                        scope.ServiceProvider
-                            .GetRequiredService<IMediator>();
-                mediator.Send(new ImportPlayerDataCommand());
+                var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+                mediator.Send(new ImportPLDataCommand());
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Data.ResponseModel;
-using FPLCompanion.Data.Entities;
 using FPLCompanion.Data.ViewModels;
 using FPLCompanion.DataService.Abstractions;
 using FPLCompanion.Dependencies;
@@ -11,19 +10,20 @@ using MongoDB.Driver;
 
 namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
 {
-    public class GetAllPlayerDataQuery : IRequest<LoadResult>
+
+    public class GetForwardDataQuery : IRequest<LoadResult>
     {
         public DataSourceLoadOptions loadOptions { get; set; }
     }
 
-    public class GetAllPlayerDataQueryHandler : IRequestHandler<GetAllPlayerDataQuery, LoadResult>
+    public class GetForwardDataQueryHandler : IRequestHandler<GetForwardDataQuery, LoadResult>
     {
         private readonly IElementDataService _elementDataService;
         private readonly ITeamDataService _teamDataService;
         private readonly IElementTypeDataService _elementTypeDataService;
         private readonly IMapper _mapper;
 
-        public GetAllPlayerDataQueryHandler(
+        public GetForwardDataQueryHandler(
             IElementDataService elementDataService,
             ITeamDataService teamDataService,
             IElementTypeDataService elementTypeDataService,
@@ -35,15 +35,16 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
             _mapper = mapper;
         }
 
-        public async Task<LoadResult> Handle(GetAllPlayerDataQuery request, CancellationToken cancellationToken)
+        public async Task<LoadResult> Handle(GetForwardDataQuery request, CancellationToken cancellationToken)
         {
             request.loadOptions.PrimaryKey = new[] { "id" };
             request.loadOptions.PaginateViaPrimaryKey = true;
 
-            var playerEntities = await 
+            var playerEntities = await
                 (
                     _elementDataService._elementsCollection.
                         Aggregate().
+                        Match(x => x.element_type == (short)Position.Forward).
                         Lookup(_teamDataService._teamsCollection, x => x.team_code, y => y.code, (ElementAggregate p) => p.teamsInfo).
                         Lookup(_elementTypeDataService._elementTypeCollection, x => x.element_type, y => y.id, (ElementAggregate p) => p.positionsInfo)
                 ).ToListAsync();

@@ -13,17 +13,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FPLCompanion.DataServices",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FPLCompanion.Data", "FPLCompanion.Data", "{BBF3DC30-A9F9-4D27-A413-BD310B59AD62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPLCompanion.Data", "src\FPLCompanion.Data\FPLCompanion.Data.csproj", "{EECEC9F1-B6F9-43A5-BBE3-29A5CFD427E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FPLCompanion.Data", "src\FPLCompanion.Data\FPLCompanion.Data.csproj", "{EECEC9F1-B6F9-43A5-BBE3-29A5CFD427E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPLCompanion.DataService", "src\FPLCompanion.DataService\FPLCompanion.DataService.csproj", "{8E5BA253-29BB-45E2-95A7-F791AC034639}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FPLCompanion.DataService", "src\FPLCompanion.DataService\FPLCompanion.DataService.csproj", "{8E5BA253-29BB-45E2-95A7-F791AC034639}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FPLCompanion.HostedServices", "FPLCompanion.HostedServices", "{93BB83FA-92DA-4648-9C01-C16194746406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPLCompanion.HostedServices", "src\FPLCompanion.HostedServices\FPLCompanion.HostedServices.csproj", "{88889A17-ED75-4538-8886-97C63C250942}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FPLCompanion.HostedServices", "src\FPLCompanion.HostedServices\FPLCompanion.HostedServices.csproj", "{88889A17-ED75-4538-8886-97C63C250942}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FPLCompanion.ApplicationServices", "FPLCompanion.ApplicationServices", "{1EB60DE3-EE81-429A-A21E-C5E57DB74278}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPLCompanion.ApplicationServices", "src\FPLCompanion.ApplicationServices\FPLCompanion.ApplicationServices.csproj", "{9E8DF8A0-EE20-4001-9859-6EB428B7860A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FPLCompanion.ApplicationServices", "src\FPLCompanion.ApplicationServices\FPLCompanion.ApplicationServices.csproj", "{9E8DF8A0-EE20-4001-9859-6EB428B7860A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FPLCompanion.Dependencies", "src\FPLCompanion.Dependencies\FPLCompanion.Dependencies.csproj", "{E3EF8075-68D1-42AA-B96A-839706FE503B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{491AD07D-48E9-44D7-98E2-766AFABAAC5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPLCompanion.Dto", "src\FPLCompanion.Dto\FPLCompanion.Dto.csproj", "{E551DFD0-D436-4052-8182-1F044DCE904F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +57,14 @@ Global
 		{9E8DF8A0-EE20-4001-9859-6EB428B7860A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E8DF8A0-EE20-4001-9859-6EB428B7860A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E8DF8A0-EE20-4001-9859-6EB428B7860A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3EF8075-68D1-42AA-B96A-839706FE503B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3EF8075-68D1-42AA-B96A-839706FE503B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3EF8075-68D1-42AA-B96A-839706FE503B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3EF8075-68D1-42AA-B96A-839706FE503B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E551DFD0-D436-4052-8182-1F044DCE904F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E551DFD0-D436-4052-8182-1F044DCE904F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E551DFD0-D436-4052-8182-1F044DCE904F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E551DFD0-D436-4052-8182-1F044DCE904F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +80,9 @@ Global
 		{88889A17-ED75-4538-8886-97C63C250942} = {93BB83FA-92DA-4648-9C01-C16194746406}
 		{1EB60DE3-EE81-429A-A21E-C5E57DB74278} = {CBA8CE30-0F9F-40D4-8651-3EDB53FA770B}
 		{9E8DF8A0-EE20-4001-9859-6EB428B7860A} = {1EB60DE3-EE81-429A-A21E-C5E57DB74278}
+		{E3EF8075-68D1-42AA-B96A-839706FE503B} = {CBA8CE30-0F9F-40D4-8651-3EDB53FA770B}
+		{491AD07D-48E9-44D7-98E2-766AFABAAC5E} = {CBA8CE30-0F9F-40D4-8651-3EDB53FA770B}
+		{E551DFD0-D436-4052-8182-1F044DCE904F} = {491AD07D-48E9-44D7-98E2-766AFABAAC5E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE7C47EE-5D58-4B88-9133-A696D7169917}

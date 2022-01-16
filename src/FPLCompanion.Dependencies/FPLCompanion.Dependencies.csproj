@@ -8,13 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="MediatR" Version="9.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="DevExtreme.AspNet.Data" Version="2.8.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FPLCompanion.DataService\FPLCompanion.DataService.csproj" />
-    <ProjectReference Include="..\FPLCompanion.Dependencies\FPLCompanion.Dependencies.csproj" />
+    <ProjectReference Include="..\FPLCompanion.Data\FPLCompanion.Data.csproj" />
+    <ProjectReference Include="..\FPLCompanion.Dto\FPLCompanion.Dto.csproj" />
   </ItemGroup>
 
 </Project>
