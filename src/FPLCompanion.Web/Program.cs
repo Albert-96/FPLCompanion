@@ -6,6 +6,8 @@ using FPLCompanion.DataService.Services;
 using FPLCompanion.Dependencies;
 using FPLCompanion.HostedServices;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<DatabaseSettings>(
     builder.Configuration.GetSection("DatabaseSettings"));
 builder.Services.AddSingleton(ConfigureMapper());
-builder.Services.AddMediatR(typeof(ImportPLDataCommand).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ImportPLDataCommand).Assembly));
 
 builder.Services.AddScoped<IElementDataService, ElementDataService>();
 builder.Services.AddScoped<ITeamDataService, TeamDataService>();
