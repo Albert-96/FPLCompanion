@@ -33,7 +33,7 @@ namespace FPLCompanion.Dto
         public string second_name { get; set; }
         public string selected_by_percent { get; set; }
         public bool special { get; set; }
-        public object squad_number { get; set; }
+        public int? squad_number { get; set; }
         public string status { get; set; }
         public int team { get; set; }
         public int team_code { get; set; }

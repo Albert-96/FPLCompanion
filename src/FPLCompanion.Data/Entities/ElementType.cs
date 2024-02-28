@@ -1,11 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FPLCompanion.Data.Entities
 {
     public class ElementType
     {
-        [BsonId]
-        public string? _Id { get; set; }
+        [NotMapped]
         public int id { get; set; }
         public string plural_name { get; set; }
         public string plural_name_short { get; set; }

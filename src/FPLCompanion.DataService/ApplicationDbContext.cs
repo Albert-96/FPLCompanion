@@ -1,4 +1,5 @@
 ﻿using FPLCompanion.Data.Entities;
+using FPLCompanion.DataService.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.EntityFrameworkCore.Extensions;
 
@@ -12,17 +13,7 @@ namespace FPLCompanion.DataService
         /// <summary>
         /// Events entity.
         /// </summary>
-        public Element Events { get; set; }
-
-        /// <summary>
-        /// Teams entity.
-        /// </summary>
-        public Team Teams { get; set; }
-
-        /// <summary>
-        /// Element type entity.
-        /// </summary>
-        public ElementType ElementTypes { get; set; }
+        public DbSet<Element> Elements { get; set; }
 
         /// <summary>
         /// EF Model Creator Function. 
@@ -31,9 +22,11 @@ namespace FPLCompanion.DataService
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Element>().ToCollection("events");
-            modelBuilder.Entity<Team>().ToCollection("teams");
-            modelBuilder.Entity<ElementType>().ToCollection("elementTypes");
+            modelBuilder.Entity<Element>(e =>
+            {
+                e.ToCollection("Element");
+                e.Property(p => p.id).HasElementName("_id");
+            });
         }
     }
 }

@@ -10,7 +10,7 @@ namespace FPLCompanion.Dto
     {
         public int code { get; set; }
         public int draw { get; set; }
-        public object form { get; set; }
+        public string form { get; set; }
         public int id { get; set; }
         public int loss { get; set; }
         public string name { get; set; }
@@ -19,7 +19,7 @@ namespace FPLCompanion.Dto
         public int position { get; set; }
         public string short_name { get; set; }
         public int strength { get; set; }
-        public object team_division { get; set; }
+        public string team_division { get; set; }
         public bool unavailable { get; set; }
         public int win { get; set; }
         public int strength_overall_home { get; set; }

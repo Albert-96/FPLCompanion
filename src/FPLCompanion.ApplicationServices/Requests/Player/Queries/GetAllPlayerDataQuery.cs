@@ -2,55 +2,53 @@
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Data.ResponseModel;
 using FPLCompanion.Data.Entities;
-using FPLCompanion.Data.ViewModels;
-using FPLCompanion.DataService.Abstractions;
+using FPLCompanion.DataService;
 using FPLCompanion.Dependencies;
 using FPLCompanion.Dto;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
+using System.Xml;
 
 namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
 {
-    public class GetAllPlayerDataQuery : IRequest<LoadResult>
+    public class GetAllPlayerDataQuery : IRequest<GridResponseDto<ElementDto>>
     {
-        public DataSourceLoadOptions loadOptions { get; set; }
+        public GridDto gridParams { get; set; }
     }
 
-    public class GetAllPlayerDataQueryHandler : IRequestHandler<GetAllPlayerDataQuery, LoadResult>
+    public class GetAllPlayerDataQueryHandler : IRequestHandler<GetAllPlayerDataQuery, GridResponseDto<ElementDto>>
     {
-        private readonly IElementDataService _elementDataService;
-        private readonly ITeamDataService _teamDataService;
-        private readonly IElementTypeDataService _elementTypeDataService;
+        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
         public GetAllPlayerDataQueryHandler(
-            IElementDataService elementDataService,
-            ITeamDataService teamDataService,
-            IElementTypeDataService elementTypeDataService,
+            ApplicationDbContext context,
             IMapper mapper)
         {
-            _elementDataService = elementDataService;
-            _teamDataService = teamDataService;
-            _elementTypeDataService = elementTypeDataService;
+            _context = context;
             _mapper = mapper;
         }
 
-        public async Task<LoadResult> Handle(GetAllPlayerDataQuery request, CancellationToken cancellationToken)
+        public async Task<GridResponseDto<ElementDto>> Handle(GetAllPlayerDataQuery request, CancellationToken cancellationToken)
         {
-            request.loadOptions.PrimaryKey = new[] { "id" };
-            request.loadOptions.PaginateViaPrimaryKey = true;
+            var result = new GridResponseDto<ElementDto>();
 
-            var playerEntities = await 
-                (
-                    _elementDataService._elementsCollection.
-                        Aggregate().
-                        Lookup(_teamDataService._teamsCollection, x => x.team_code, y => y.code, (ElementAggregate p) => p.teamsInfo).
-                        Lookup(_elementTypeDataService._elementTypeCollection, x => x.element_type, y => y.id, (ElementAggregate p) => p.positionsInfo)
-                ).ToListAsync();
-            var playerData = _mapper.Map<IEnumerable<ElementAggregate>, IEnumerable<ElementDto>>(playerEntities);
-
-            LoadResult result = DataSourceLoader.Load(playerData, request.loadOptions);
-            return result;
+            try
+            {
+                var playerEntities = _context.Elements
+                    .OrderBy(p => p.web_name)
+                    .Skip(request.gridParams.First ?? 0)
+                    .Take(request.gridParams.Rows ?? 15)
+                    .Select(x => x);
+                result.records = _mapper.Map<IEnumerable<Element>, IEnumerable<ElementDto>>(playerEntities);
+                result.totalRecords = _context.Elements.Count();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return result;
+            }
         }
     }
 }

@@ -5,24 +5,28 @@ using FPLCompanion.DataService.Abstractions;
 using FPLCompanion.DataService.Services;
 using FPLCompanion.Dependencies;
 using FPLCompanion.HostedServices;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var mongoDBSettings = builder.Configuration.GetSection("DatabaseSettings").Get<DatabaseSettings>();
 
 // Add services to the container.
 builder.Services.Configure<DatabaseSettings>(
     builder.Configuration.GetSection("DatabaseSettings"));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseMongoDB(mongoDBSettings?.ConnectionString ?? "", mongoDBSettings?.DatabaseName ?? ""));
+
 builder.Services.AddSingleton(ConfigureMapper());
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ImportPLDataCommand).Assembly));
 
 builder.Services.AddScoped<IElementDataService, ElementDataService>();
 builder.Services.AddScoped<ITeamDataService, TeamDataService>();
 builder.Services.AddScoped<IElementTypeDataService, ElementTypeDataService>();
+builder.Services.AddScoped<IElementTypeDataService, ElementTypeDataService>();
 
 builder.Services.AddControllers();
-builder.Services.AddHostedService<PremierLeagueApiWorker>();
+//builder.Services.AddHostedService<PremierLeagueApiWorker>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

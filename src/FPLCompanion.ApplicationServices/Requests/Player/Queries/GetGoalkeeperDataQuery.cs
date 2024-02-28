@@ -49,8 +49,8 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
                     _elementDataService._elementsCollection.
                         Aggregate().
                         Match(x => x.element_type == (short)Position.Goalkeeper).
-                        Lookup(_teamDataService._teamsCollection, x => x.team_code, y => y.code, (ElementAggregate p) => p.teamsInfo).
-                        Lookup(_elementTypeDataService._elementTypeCollection, x => x.element_type, y => y.id, (ElementAggregate p) => p.positionsInfo)
+                        Lookup(_teamDataService._teamsCollection, x => x.team_code, y => y.code, (ElementAggregate p) => p.teamInfo).
+                        Lookup(_elementTypeDataService._elementTypeCollection, x => x.element_type, y => y.id, (ElementAggregate p) => p.positionInfo)
                 ).ToListAsync();
             var playerData = _mapper.Map<IEnumerable<ElementAggregate>, IEnumerable<ElementDto>>(playerEntities);
 

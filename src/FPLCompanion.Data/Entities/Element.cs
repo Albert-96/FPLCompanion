@@ -6,7 +6,7 @@ namespace FPLCompanion.Data.Entities
     public class Element
     {
         [BsonId]
-        public string? _Id { get; set; }
+        public int id { get; set; }
         public int? chance_of_playing_next_round { get; set; }
         public int? chance_of_playing_this_round { get; set; }
         public int code { get; set; }
@@ -21,7 +21,6 @@ namespace FPLCompanion.Data.Entities
         public int event_points { get; set; }
         public string first_name { get; set; }
         public float form { get; set; }
-        public int id { get; set; }
         public bool in_dreamteam { get; set; }
         public string news { get; set; }
         public DateTime? news_added { get; set; }
@@ -31,7 +30,7 @@ namespace FPLCompanion.Data.Entities
         public string second_name { get; set; }
         public string selected_by_percent { get; set; }
         public bool special { get; set; }
-        public object squad_number { get; set; }
+        public int? squad_number { get; set; }
         public string status { get; set; }
         public int team { get; set; }
         public int team_code { get; set; }
@@ -74,5 +73,7 @@ namespace FPLCompanion.Data.Entities
         public string direct_freekicks_text { get; set; }
         public int? penalties_order { get; set; }
         public string penalties_text { get; set; }
+        public Team? teamInfo { get; set; }
+        public ElementType? elementTypeInfo { get; set; }
     }
 }

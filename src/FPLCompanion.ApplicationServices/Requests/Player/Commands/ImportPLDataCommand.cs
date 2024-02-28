@@ -39,14 +39,16 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Commands
                 var response = await client.GetAsync("https://fantasy.premierleague.com/api/bootstrap-static/");
                 RootDto deserializedClass = JsonConvert.DeserializeObject<RootDto>(await response.Content.ReadAsStringAsync(cancellationToken));
 
-                var players = _mapper.Map<IEnumerable<ElementDto>, IEnumerable<Element>>(deserializedClass.elements).ToList();
-                await _elementDataService.UpdateMany(players);
-
                 var teams = _mapper.Map<IEnumerable<TeamDto>, IEnumerable<Team>>(deserializedClass.teams).ToList();
-                await _teamDataService.UpdateMany(teams);
-
                 var elementTypes = _mapper.Map<IEnumerable<ElementTypeDto>, IEnumerable<ElementType>>(deserializedClass.element_types).ToList();
-                await _elemenTypeDataService.UpdateMany(elementTypes);
+                var players = _mapper.Map<IEnumerable<ElementDto>, IEnumerable<Element>>(deserializedClass.elements).ToList();
+                players = players.Select(x =>
+                {
+                    x.teamInfo = teams.FirstOrDefault(p => p.id == x.team);
+                    x.elementTypeInfo = elementTypes.FirstOrDefault(p => p.id == x.element_type);
+                    return x;
+                }).ToList();
+                await _elementDataService.UpdateMany(players);
 
                 return 1;
             }

@@ -20,6 +20,6 @@ namespace FPLCompanion.DataService.Abstractions
 
         Task InsertMany(List<Element> players);
 
-        Task RemoveAsync(string id);
+        Task RemoveAsync(int id);
     }
 }

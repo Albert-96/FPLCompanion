@@ -28,7 +28,7 @@ namespace FPLCompanion.HostedServices
             using (var scope = _serviceScopeFactory.CreateScope())
             {
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-                mediator.Send(new ImportPLDataCommand());
+                await mediator.Send(new ImportPLDataCommand());
             }
         }
     }

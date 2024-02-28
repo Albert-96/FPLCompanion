@@ -28,7 +28,7 @@ namespace FPLCompanion.DataService.Services
             var element = await _elementsCollection.Find(x => x.id == id).FirstOrDefaultAsync();
             if (element != null)
             {
-                updatedBook._Id = element._Id;
+                updatedBook.id = element.id;
             }
 
             await _elementsCollection.ReplaceOneAsync(x => x.id == id, updatedBook, new UpdateOptions { IsUpsert = true });
@@ -43,7 +43,7 @@ namespace FPLCompanion.DataService.Services
             }
         }
 
-        public async Task RemoveAsync(string id) =>
-            await _elementsCollection.DeleteOneAsync(x => x._Id == id);
+        public async Task RemoveAsync(int id) =>
+            await _elementsCollection.DeleteOneAsync(x => x.id == id);
     }
 }
