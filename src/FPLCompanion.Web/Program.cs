@@ -26,7 +26,7 @@ builder.Services.AddScoped<IElementTypeDataService, ElementTypeDataService>();
 builder.Services.AddScoped<IElementTypeDataService, ElementTypeDataService>();
 
 builder.Services.AddControllers();
-//builder.Services.AddHostedService<PremierLeagueApiWorker>();
+builder.Services.AddHostedService<PremierLeagueApiWorker>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

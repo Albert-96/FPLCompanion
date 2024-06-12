@@ -46,6 +46,7 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Commands
                 {
                     x.teamInfo = teams.FirstOrDefault(p => p.id == x.team);
                     x.elementTypeInfo = elementTypes.FirstOrDefault(p => p.id == x.element_type);
+                    x.current_cost = (float)(x.now_cost ?? 0) / (float)10;
                     return x;
                 }).ToList();
                 await _elementDataService.UpdateMany(players);

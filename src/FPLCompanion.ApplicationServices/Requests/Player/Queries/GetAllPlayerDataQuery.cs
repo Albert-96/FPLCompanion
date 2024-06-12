@@ -1,23 +1,20 @@
 ﻿using AutoMapper;
-using DevExtreme.AspNet.Data;
-using DevExtreme.AspNet.Data.ResponseModel;
 using FPLCompanion.Data.Entities;
 using FPLCompanion.DataService;
-using FPLCompanion.Dependencies;
 using FPLCompanion.Dto;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
-using System.Xml;
+using PrimeNGTableExtension;
+using PrimeNGTableExtension.Models;
 
 namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
 {
-    public class GetAllPlayerDataQuery : IRequest<GridResponseDto<ElementDto>>
+    public class GetAllPlayerDataQuery : IRequest<TableResponseModel<ElementDto>>
     {
-        public GridDto gridParams { get; set; }
+        public TableRequestModel gridParams { get; set; }
     }
 
-    public class GetAllPlayerDataQueryHandler : IRequestHandler<GetAllPlayerDataQuery, GridResponseDto<ElementDto>>
+    public class GetAllPlayerDataQueryHandler : IRequestHandler<GetAllPlayerDataQuery, TableResponseModel<ElementDto>>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -30,19 +27,20 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
             _mapper = mapper;
         }
 
-        public async Task<GridResponseDto<ElementDto>> Handle(GetAllPlayerDataQuery request, CancellationToken cancellationToken)
+        public async Task<TableResponseModel<ElementDto>> Handle(GetAllPlayerDataQuery request, CancellationToken cancellationToken)
         {
-            var result = new GridResponseDto<ElementDto>();
+            var result = new TableResponseModel<ElementDto>();
 
             try
             {
                 var playerEntities = _context.Elements
+                    .PrimeNGTableQuery(request.gridParams)
                     .OrderBy(p => p.web_name)
                     .Skip(request.gridParams.First ?? 0)
                     .Take(request.gridParams.Rows ?? 15)
                     .Select(x => x);
-                result.records = _mapper.Map<IEnumerable<Element>, IEnumerable<ElementDto>>(playerEntities);
-                result.totalRecords = _context.Elements.Count();
+                result.Records = _mapper.Map<IEnumerable<Element>, IEnumerable<ElementDto>>(playerEntities);
+                result.TotalRecords = _context.Elements.PrimeNGTableCount(request.gridParams);
                 return result;
             }
             catch (Exception ex)

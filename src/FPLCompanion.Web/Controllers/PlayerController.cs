@@ -2,6 +2,7 @@
 using FPLCompanion.Dependencies;
 using FPLCompanion.Dto;
 using Microsoft.AspNetCore.Mvc;
+using PrimeNGTableExtension.Models;
 
 namespace FPLCompanion.Controllers
 {
@@ -10,7 +11,7 @@ namespace FPLCompanion.Controllers
     {
         [HttpPost]
         [Route("player/all")]
-        public async Task<IActionResult> GetAllPlayers(GridDto gridParams)
+        public async Task<IActionResult> GetAllPlayers(TableRequestModel gridParams)
         {
             return this.Ok(await this.Mediator.Send(new GetAllPlayerDataQuery { gridParams = gridParams}));
         }
