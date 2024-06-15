@@ -22,5 +22,9 @@
         public const string MatchModeDateIsNot = "dateIsNot";
         public const string MatchModeDateBefore = "dateBefore";
         public const string MatchModeDateAfter = "dateAfter";
+        public const string ConstantThenByDescending = "ThenByDescending";
+        public const string ConstantThenBy = "ThenBy";
+        public const string ConstantOrderByDescending = "OrderByDescending";
+        public const string ConstantOrderBy = "OrderBy";
     }
 }

@@ -13,7 +13,8 @@ namespace PrimeNGTableExtension.Core
             _Entity = new EntityExpressionModel<T>()
             {
                 EntityType = typeof(T),
-                ParameterExpression = Expression.Parameter(typeof(T))
+                ParameterExpression = Expression.Parameter(typeof(T)),
+                queryExpression = queryExpression
             };
         }
 
@@ -60,6 +61,23 @@ namespace PrimeNGTableExtension.Core
 
             _Entity.ChildExpression = AddLambdaExpression(_Entity.ChildExpression, operationsEnum, expressionBody);
         }
+
+        public void AddSortProperty(
+            string propertyName,
+            bool isDescending,
+            bool isThenBy)
+        {
+            var property = _Entity.EntityType.GetProperty(propertyName);
+            var propertyAccess = Expression.MakeMemberAccess(_Entity.ParameterExpression, property);
+            var orderByExpression = Expression.Lambda(propertyAccess, _Entity.ParameterExpression);
+            var command = ExpressionOperations.GetOrderByConstant(isDescending, isThenBy);
+            var resultExpression = Expression.Call(
+                typeof(Queryable), command,
+                [_Entity.EntityType, property.PropertyType],
+                _Entity.queryExpression.Expression,
+                Expression.Quote(orderByExpression));
+            _Entity.queryExpression = _Entity.queryExpression.Provider.CreateQuery<T>(resultExpression);
+        } 
 
         public Expression<Func<T, bool>> CombineLambdaExpression(
             Expression<Func<T, bool>> queryExpression,

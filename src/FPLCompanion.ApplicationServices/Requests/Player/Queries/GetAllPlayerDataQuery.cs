@@ -35,9 +35,6 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
             {
                 var playerEntities = _context.Elements
                     .PrimeNGTableQuery(request.gridParams)
-                    .OrderBy(p => p.web_name)
-                    .Skip(request.gridParams.First ?? 0)
-                    .Take(request.gridParams.Rows ?? 15)
                     .Select(x => x);
                 result.Records = _mapper.Map<IEnumerable<Element>, IEnumerable<ElementDto>>(playerEntities);
                 result.TotalRecords = _context.Elements.PrimeNGTableCount(request.gridParams);

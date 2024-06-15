@@ -80,5 +80,27 @@ namespace PrimeNGTableExtension.Core
                     throw new NotSupportedException($"Filter: {matchMode} is not supported.");
             }
         }
+
+        public static string GetOrderByConstant(
+            bool isDescending,
+            bool isThenBy)
+        {
+            if (isDescending && isThenBy)
+            {
+                return PrimeNGConstants.ConstantThenByDescending;
+            }
+            else if (isDescending && !isThenBy)
+            {
+                return PrimeNGConstants.ConstantOrderByDescending;
+            }
+            else if (!isDescending && isThenBy)
+            {
+                return PrimeNGConstants.ConstantThenBy;
+            }
+            else
+            {
+                return PrimeNGConstants.ConstantOrderBy;
+            }
+        }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using PrimeNGTableExtension.Core;
 using PrimeNGTableExtension.Models;
 using PrimeNGTableExtension.Utils;
-using System;
-using System.Reflection;
+using System.Data;
 
 namespace PrimeNGTableExtension
 {
@@ -49,6 +48,13 @@ namespace PrimeNGTableExtension
                 queryExpression = queryExpression.Where(expressionBuilder._Entity.MainExpression);
             }
 
+            if (!string.IsNullOrEmpty(request.SortField))
+            {
+                queryExpression = SingleOrderDataSet(queryExpression, request);
+            }
+
+            queryExpression = queryExpression.Skip(request.First.Value).Take(request.Rows.Value);
+
             return queryExpression;
         }
 
@@ -64,13 +70,6 @@ namespace PrimeNGTableExtension
             if (filters.Any())
             {
                 var expressionBuilder = new ExpressionBuilder<T>(queryExpression);
-                //filters.SelectMany(
-                //    x => x.Value,
-                //    (x, filter) =>
-                //    {
-                //        expressionBuilder.AddFilterProperty(x.Key, filter.Value, filter.MatchMode, filter.Operator);
-                //        return filter;
-                //    }).ToList();
                 filters.SelectMany(
                     x => x.Value.Select((filter, index) =>
                     {
@@ -99,6 +98,28 @@ namespace PrimeNGTableExtension
             }
 
             return queryExpression.Count();
+        }
+
+        private static IQueryable<T> SingleOrderDataSet<T>(
+            IQueryable<T> queryExpression,
+            TableRequestModel tableFilterPayload)
+        {
+            var expressionBuilder = new ExpressionBuilder<T>(queryExpression);
+            switch (tableFilterPayload.SortOrder)
+            {
+                case (int)SortingEnum.OrderByAsc:
+                    expressionBuilder.AddSortProperty(tableFilterPayload.SortField, false, false);
+                    break;
+
+                case (int)SortingEnum.OrderByDesc:
+                    expressionBuilder.AddSortProperty(tableFilterPayload.SortField, true, false);
+                    break;
+
+                default:
+                    throw new ArgumentException("Sort Order is invalid");
+            }
+
+            return expressionBuilder._Entity.queryExpression;
         }
     }
 }
