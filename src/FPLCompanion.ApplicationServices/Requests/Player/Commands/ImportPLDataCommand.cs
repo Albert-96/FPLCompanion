@@ -36,8 +36,8 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Commands
             {
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Accept.Clear();
-                var response = await client.GetAsync("https://fantasy.premierleague.com/api/bootstrap-static/");
-                RootDto deserializedClass = JsonConvert.DeserializeObject<RootDto>(await response.Content.ReadAsStringAsync(cancellationToken));
+                var response = await client.GetAsync(FPLConstants.FplGeneralApi);
+                GeneralInfoDto deserializedClass = JsonConvert.DeserializeObject<GeneralInfoDto>(await response.Content.ReadAsStringAsync(cancellationToken));
 
                 var teams = _mapper.Map<IEnumerable<TeamDto>, IEnumerable<Team>>(deserializedClass.teams).ToList();
                 var elementTypes = _mapper.Map<IEnumerable<ElementTypeDto>, IEnumerable<ElementType>>(deserializedClass.element_types).ToList();
