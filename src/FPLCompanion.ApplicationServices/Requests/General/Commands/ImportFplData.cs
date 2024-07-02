@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FPLCompanion.ApplicationServices.Requests.Player.Commands;
 using FPLCompanion.Data.Entities;
 using FPLCompanion.DataService.Abstractions;
 using FPLCompanion.Dto;
@@ -12,26 +11,26 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
     {
     }
 
-    public class ImportPLDataCommandHandler : IRequestHandler<ImportPLDataCommand, int>
+    public class ImportFplDataHandler : IRequestHandler<ImportFplData, int>
     {
-        private readonly IElementDataService _elementDataService;
-        private readonly ITeamDataService _teamDataService;
-        private readonly IElementTypeDataService _elemenTypeDataService;
+        private readonly IElementRepository _elementRepository;
+        private readonly IElementTypeRepository _elementTypeRepository;
+        private readonly ITeamRepository _teamRepository;
         private readonly IMapper _mapper;
 
-        public ImportPLDataCommandHandler(
-            IElementDataService elementDataService,
-            ITeamDataService teamDataService,
-            IElementTypeDataService elemenTypeDataService,
+        public ImportFplDataHandler(
+            ITeamRepository teamRepository,
+            IElementRepository elementRepository,
+            IElementTypeRepository elementTypeRepository,
             IMapper mapper)
         {
-            _elementDataService = elementDataService;
-            _teamDataService = teamDataService;
-            _elemenTypeDataService = elemenTypeDataService;
+            _elementRepository = elementRepository;
+            _elementTypeRepository = elementTypeRepository;
+            _teamRepository = teamRepository;
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(ImportPLDataCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(ImportFplData request, CancellationToken cancellationToken)
         {
             try
             {
@@ -50,13 +49,13 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
                     x.current_cost = (float)(x.now_cost ?? 0) / (float)10;
                     return x;
                 }).ToList();
-                var elementTask = _elementDataService.UpdateMany(players);
-                var teamTask = _teamDataService.UpdateMany(teams);
-                var elementTypeTask = _elemenTypeDataService.UpdateMany(elementTypes);
+                var elementTask = _elementRepository.UpdateMany(players);
+                var teamTask = _teamRepository.UpdateMany(teams);
+                var elementTypeTask = _elementTypeRepository.UpdateMany(elementTypes);
 
-                client.DefaultRequestHeaders.Accept.Clear();
-                response = await client.GetAsync(FPLConstants.FplFixturesApi);
-                FixtureDto deserializedFixture = JsonConvert.DeserializeObject<FixtureDto>(await response.Content.ReadAsStringAsync(cancellationToken));
+                //client.DefaultRequestHeaders.Accept.Clear();
+                //response = await client.GetAsync(FPLConstants.FplFixturesApi);
+                //FixtureDto deserializedFixture = JsonConvert.DeserializeObject<FixtureDto>(await response.Content.ReadAsStringAsync(cancellationToken));
 
                 Task.WaitAll(elementTask, teamTask, elementTask);
 

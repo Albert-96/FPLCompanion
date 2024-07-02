@@ -71,7 +71,7 @@
         public int? penalties_order { get; set; }
         public string penalties_text { get; set; }
         public float? current_cost { get; set; }
-        public TeamDto teamInfo { get; set; }
-        public ElementTypeDto positionInfo { get; set; }
+        public string teamInfo { get; set; }
+        public string positionInfo { get; set; }
     }
 }

@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\PrimeNGTableExtension\PrimeNGTableExtension.csproj" />
     <ProjectReference Include="..\FPLCompanion.Data\FPLCompanion.Data.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,5 @@
 using AutoMapper;
-using FPLCompanion.ApplicationServices.Requests.Player.Commands;
+using FPLCompanion.ApplicationServices.Requests.General.Commands;
 using FPLCompanion.DataService;
 using FPLCompanion.DataService.Abstractions;
 using FPLCompanion.DataService.Services;
@@ -18,12 +18,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddSingleton(ConfigureMapper());
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ImportPLDataCommand).Assembly));
-
-builder.Services.AddScoped<IElementDataService, ElementDataService>();
-builder.Services.AddScoped<ITeamDataService, TeamDataService>();
-builder.Services.AddScoped<IElementTypeDataService, ElementTypeDataService>();
-builder.Services.AddScoped<IElementTypeDataService, ElementTypeDataService>();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ImportFplData).Assembly));
+builder.Services.AddScoped(typeof(IEntityRepository<>), typeof(EntityRepository<>));
+builder.Services.AddScoped<IElementRepository, ElementRepository>();
+builder.Services.AddScoped<IElementTypeRepository, ElementTypeRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddHostedService<PremierLeagueApiWorker>();

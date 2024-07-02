@@ -1,4 +1,5 @@
-﻿using FPLCompanion.DataService.Abstractions;
+﻿using FPLCompanion.Data.Entities;
+using FPLCompanion.DataService.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -9,8 +10,8 @@ namespace FPLCompanion.DataService.Services
     public class EntityRepository<T> : IEntityRepository<T> where T : class
     {
         public IMongoCollection<T> _collection { get; set; }
-        private readonly ApplicationDbContext _context;
-        private DbSet<T> table;
+        protected ApplicationDbContext _context;
+        protected DbSet<T> table;
 
         public EntityRepository(
             ApplicationDbContext context,
