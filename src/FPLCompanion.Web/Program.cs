@@ -23,6 +23,7 @@ builder.Services.AddScoped(typeof(IEntityRepository<>), typeof(EntityRepository<
 builder.Services.AddScoped<IElementRepository, ElementRepository>();
 builder.Services.AddScoped<IElementTypeRepository, ElementTypeRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<IFixtureRepository, FixtureRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddHostedService<PremierLeagueApiWorker>();

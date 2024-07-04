@@ -16,17 +16,20 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
         private readonly IElementRepository _elementRepository;
         private readonly IElementTypeRepository _elementTypeRepository;
         private readonly ITeamRepository _teamRepository;
+        private readonly IFixtureRepository _fixtureRepository;
         private readonly IMapper _mapper;
 
         public ImportFplDataHandler(
             ITeamRepository teamRepository,
             IElementRepository elementRepository,
             IElementTypeRepository elementTypeRepository,
+            IFixtureRepository fixtureRepository,
             IMapper mapper)
         {
             _elementRepository = elementRepository;
             _elementTypeRepository = elementTypeRepository;
             _teamRepository = teamRepository;
+            _fixtureRepository = fixtureRepository;
             _mapper = mapper;
         }
 
@@ -53,11 +56,13 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
                 var teamTask = _teamRepository.UpdateMany(teams);
                 var elementTypeTask = _elementTypeRepository.UpdateMany(elementTypes);
 
-                //client.DefaultRequestHeaders.Accept.Clear();
-                //response = await client.GetAsync(FPLConstants.FplFixturesApi);
-                //FixtureDto deserializedFixture = JsonConvert.DeserializeObject<FixtureDto>(await response.Content.ReadAsStringAsync(cancellationToken));
+                client.DefaultRequestHeaders.Accept.Clear();
+                response = await client.GetAsync(FPLConstants.FplFixturesApi);
+                var deserializedFixture = JsonConvert.DeserializeObject<List<FixtureDto>>(await response.Content.ReadAsStringAsync(cancellationToken));
+                var fixtures = _mapper.Map<IEnumerable<FixtureDto>, IEnumerable<Fixture>>(deserializedFixture).ToList();
+                var fixtureTask = _fixtureRepository.UpdateMany(fixtures);
 
-                Task.WaitAll(elementTask, teamTask, elementTask);
+                Task.WaitAll(elementTask, teamTask, elementTask, fixtureTask);
 
                 return 1;
             }

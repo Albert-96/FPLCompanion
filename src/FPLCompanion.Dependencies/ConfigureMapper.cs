@@ -13,6 +13,9 @@ namespace FPLCompanion.Dependencies
             CreateMap<ElementDto, ElementAggregate>().ReverseMap();
             CreateMap<TeamDto, Team>().ReverseMap();
             CreateMap<ElementTypeDto, ElementType>().ReverseMap();
+            CreateMap<FixtureDto, Fixture>().ReverseMap();
+            CreateMap<FixtureStatDto, FixtureStat>().ReverseMap();
+            CreateMap<FixturePlayerDto, FixturePlayer>().ReverseMap();
         }
     }
 }
