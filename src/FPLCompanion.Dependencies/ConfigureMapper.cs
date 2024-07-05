@@ -16,6 +16,9 @@ namespace FPLCompanion.Dependencies
             CreateMap<FixtureDto, Fixture>().ReverseMap();
             CreateMap<FixtureStatDto, FixtureStat>().ReverseMap();
             CreateMap<FixturePlayerDto, FixturePlayer>().ReverseMap();
+            CreateMap<EventDto, Event>().ReverseMap();
+            CreateMap<ChipPlayDto, ChipPlay>().ReverseMap();
+            CreateMap<TopElementInfoDto, TopElementInfo>().ReverseMap();
         }
     }
 }

@@ -17,6 +17,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
         private readonly IElementTypeRepository _elementTypeRepository;
         private readonly ITeamRepository _teamRepository;
         private readonly IFixtureRepository _fixtureRepository;
+        private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
 
         public ImportFplDataHandler(
@@ -24,12 +25,14 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
             IElementRepository elementRepository,
             IElementTypeRepository elementTypeRepository,
             IFixtureRepository fixtureRepository,
+            IEventRepository eventRepository,
             IMapper mapper)
         {
             _elementRepository = elementRepository;
             _elementTypeRepository = elementTypeRepository;
             _teamRepository = teamRepository;
             _fixtureRepository = fixtureRepository;
+            _eventRepository = eventRepository;
             _mapper = mapper;
         }
 
@@ -43,6 +46,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
                 var response = await client.GetAsync(FPLConstants.FplGeneralApi);
                 GeneralInfoDto deserializedGeneralInfo = JsonConvert.DeserializeObject<GeneralInfoDto>(await response.Content.ReadAsStringAsync(cancellationToken));
                 var teams = _mapper.Map<IEnumerable<TeamDto>, IEnumerable<Team>>(deserializedGeneralInfo.teams).ToList();
+                var events = _mapper.Map<IEnumerable<EventDto>, IEnumerable<Event>>(deserializedGeneralInfo.events).ToList();
                 var elementTypes = _mapper.Map<IEnumerable<ElementTypeDto>, IEnumerable<ElementType>>(deserializedGeneralInfo.element_types).ToList();
                 var players = _mapper.Map<IEnumerable<ElementDto>, IEnumerable<Element>>(deserializedGeneralInfo.elements).ToList();
                 players = players.Select(x =>
@@ -55,6 +59,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
                 var elementTask = _elementRepository.UpdateMany(players);
                 var teamTask = _teamRepository.UpdateMany(teams);
                 var elementTypeTask = _elementTypeRepository.UpdateMany(elementTypes);
+                var eventTask = _eventRepository.UpdateMany(events);
 
                 client.DefaultRequestHeaders.Accept.Clear();
                 response = await client.GetAsync(FPLConstants.FplFixturesApi);
@@ -62,7 +67,10 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
                 var fixtures = _mapper.Map<IEnumerable<FixtureDto>, IEnumerable<Fixture>>(deserializedFixture).ToList();
                 var fixtureTask = _fixtureRepository.UpdateMany(fixtures);
 
-                Task.WaitAll(elementTask, teamTask, elementTask, fixtureTask);
+                client.DefaultRequestHeaders.Accept.Clear();
+                response = await client.GetAsync(FPLConstants.FplElementApi);
+
+                Task.WaitAll(elementTask, teamTask, elementTask, fixtureTask, eventTask);
 
                 return 1;
             }
