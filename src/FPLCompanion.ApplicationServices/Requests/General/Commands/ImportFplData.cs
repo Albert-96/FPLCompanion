@@ -18,6 +18,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
         private readonly ITeamRepository _teamRepository;
         private readonly IFixtureRepository _fixtureRepository;
         private readonly IEventRepository _eventRepository;
+        private readonly IElementDetailRepository _elementDetailRepository;
         private readonly IMapper _mapper;
 
         public ImportFplDataHandler(
@@ -26,6 +27,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
             IElementTypeRepository elementTypeRepository,
             IFixtureRepository fixtureRepository,
             IEventRepository eventRepository,
+            IElementDetailRepository elementDetailRepository,
             IMapper mapper)
         {
             _elementRepository = elementRepository;
@@ -33,6 +35,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
             _teamRepository = teamRepository;
             _fixtureRepository = fixtureRepository;
             _eventRepository = eventRepository;
+            _elementDetailRepository = elementDetailRepository;
             _mapper = mapper;
         }
 
@@ -67,10 +70,20 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
                 var fixtures = _mapper.Map<IEnumerable<FixtureDto>, IEnumerable<Fixture>>(deserializedFixture).ToList();
                 var fixtureTask = _fixtureRepository.UpdateMany(fixtures);
 
-                client.DefaultRequestHeaders.Accept.Clear();
-                response = await client.GetAsync(FPLConstants.FplElementApi);
+                List<ElementDetail> playerDetails = new List<ElementDetail>();
+                foreach (var player in players)
+                {
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    response = await client.GetAsync($"{FPLConstants.FplElementApi}{player.id}");
+                    var deserializedPlayerDetail = JsonConvert.DeserializeObject<ElementDetailDto>(await response.Content.ReadAsStringAsync(cancellationToken));
+                    var playerDetail = _mapper.Map<ElementDetailDto, ElementDetail>(deserializedPlayerDetail);
+                    playerDetail.id = player.id;
+                    playerDetails.Add(playerDetail);
+                }
 
-                Task.WaitAll(elementTask, teamTask, elementTask, fixtureTask, eventTask);
+                var playerDetailTask = _elementDetailRepository.UpdateMany(playerDetails);
+
+                Task.WaitAll(elementTask, teamTask, elementTask, fixtureTask, eventTask, playerDetailTask);
 
                 return 1;
             }

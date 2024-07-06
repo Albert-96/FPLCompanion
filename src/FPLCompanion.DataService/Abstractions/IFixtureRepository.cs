@@ -2,7 +2,7 @@
 
 namespace FPLCompanion.DataService.Abstractions
 {
-    public interface IFixtureRepository
+    public interface IFixtureRepository : IEntityRepository<Fixture>
     {
         Task UpdateMany(List<Fixture> fixtures);
     }

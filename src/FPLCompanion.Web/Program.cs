@@ -25,6 +25,7 @@ builder.Services.AddScoped<IElementTypeRepository, ElementTypeRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IFixtureRepository, FixtureRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IElementDetailRepository, ElementDetailRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddHostedService<PremierLeagueApiWorker>();

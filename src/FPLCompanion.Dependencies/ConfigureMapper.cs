@@ -19,6 +19,9 @@ namespace FPLCompanion.Dependencies
             CreateMap<EventDto, Event>().ReverseMap();
             CreateMap<ChipPlayDto, ChipPlay>().ReverseMap();
             CreateMap<TopElementInfoDto, TopElementInfo>().ReverseMap();
+            CreateMap<ElementDetailDto, ElementDetail>().ReverseMap();
+            CreateMap<HistoryDto, History>().ReverseMap();
+            CreateMap<HistoryPastDto, HistoryPast>().ReverseMap();
         }
     }
 }

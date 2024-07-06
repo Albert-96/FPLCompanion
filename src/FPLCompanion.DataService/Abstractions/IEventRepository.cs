@@ -2,7 +2,7 @@
 
 namespace FPLCompanion.DataService.Abstractions
 {
-    public interface IEventRepository
+    public interface IEventRepository : IEntityRepository<Event>
     {
         Task UpdateMany(List<Event> events);
     }

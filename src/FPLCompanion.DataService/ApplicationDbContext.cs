@@ -30,6 +30,16 @@ namespace FPLCompanion.DataService
         public DbSet<Fixture> Fixtures { get; set; }
 
         /// <summary>
+        /// Events entity.
+        /// </summary>
+        public DbSet<Event> Events { get; set; }
+
+        /// <summary>
+        /// Element Details entity.
+        /// </summary>
+        public DbSet<ElementDetail> ElementDetails { get; set; }
+
+        /// <summary>
         /// EF Model Creator Function. 
         /// </summary>
         /// <param name="modelBuilder">EF Model builder.</param>
@@ -53,7 +63,17 @@ namespace FPLCompanion.DataService
             });
             modelBuilder.Entity<Fixture>(e =>
             {
-                e.ToCollection("Element");
+                e.ToCollection("Fixture");
+                e.Property(p => p.id).HasElementName("_id");
+            });
+            modelBuilder.Entity<Event>(e =>
+            {
+                e.ToCollection("Event");
+                e.Property(p => p.id).HasElementName("_id");
+            });
+            modelBuilder.Entity<ElementDetail>(e =>
+            {
+                e.ToCollection("ElementDetail");
                 e.Property(p => p.id).HasElementName("_id");
             });
         }
