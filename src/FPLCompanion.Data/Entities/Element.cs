@@ -74,7 +74,7 @@ namespace FPLCompanion.Data.Entities
         public string direct_freekicks_text { get; set; }
         public int? penalties_order { get; set; }
         public string penalties_text { get; set; }
-        public Team? teamInfo { get; set; }
-        public ElementType? elementTypeInfo { get; set; }
+        public string teamInfo { get; set; }
+        public string elementTypeInfo { get; set; }
     }
 }

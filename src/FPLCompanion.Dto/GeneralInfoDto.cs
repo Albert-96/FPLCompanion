@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FPLCompanion.Dto
+﻿namespace FPLCompanion.Dto
 {
     public class ChipPlayDto
     {
@@ -91,7 +85,7 @@ namespace FPLCompanion.Dto
         public string name { get; set; }
     }
 
-    public class RootDto
+    public class GeneralInfoDto
     {
         public List<EventDto> events { get; set; }
         public GameSettingsDto game_settings { get; set; }

@@ -6,6 +6,8 @@ using MediatR;
 using MongoDB.Driver;
 using PrimeNGTableExtension;
 using PrimeNGTableExtension.Models;
+using FPLCompanion.DataService.Abstractions;
+using FPLCompanion.DataService.Services;
 
 namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
 {
@@ -18,13 +20,16 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IElementRepository _elementRepository;
 
         public GetAllPlayerDataQueryHandler(
             ApplicationDbContext context,
+            IElementRepository elementRepository,
             IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+            _elementRepository = elementRepository;
         }
 
         public async Task<TableResponseModel<ElementDto>> Handle(GetAllPlayerDataQuery request, CancellationToken cancellationToken)
@@ -33,11 +38,9 @@ namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
 
             try
             {
-                var playerEntities = _context.Elements
-                    .PrimeNGTableQuery(request.gridParams)
-                    .Select(x => x);
+                var playerEntities = _elementRepository.GetGridData(request.gridParams);
                 result.Records = _mapper.Map<IEnumerable<Element>, IEnumerable<ElementDto>>(playerEntities);
-                result.TotalRecords = _context.Elements.PrimeNGTableCount(request.gridParams);
+                result.TotalRecords = _elementRepository.GetGridCount(request.gridParams);
                 return result;
             }
             catch (Exception ex)

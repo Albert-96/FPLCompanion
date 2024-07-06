@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FPLCompanion.Dto
+﻿namespace FPLCompanion.Dto
 {
     public class ElementDto
     {
@@ -77,7 +71,7 @@ namespace FPLCompanion.Dto
         public int? penalties_order { get; set; }
         public string penalties_text { get; set; }
         public float? current_cost { get; set; }
-        public TeamDto teamInfo { get; set; }
-        public ElementTypeDto positionInfo { get; set; }
+        public string teamInfo { get; set; }
+        public string positionInfo { get; set; }
     }
 }
