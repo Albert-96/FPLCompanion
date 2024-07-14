@@ -5,7 +5,9 @@ using FPLCompanion.DataService.Abstractions;
 using FPLCompanion.DataService.Services;
 using FPLCompanion.Dependencies;
 using FPLCompanion.HostedServices;
+using FPLCompanion.HostedServices.Jobs;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 var mongoDBSettings = builder.Configuration.GetSection("DatabaseSettings").Get<DatabaseSettings>();
@@ -26,15 +28,25 @@ builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IFixtureRepository, FixtureRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IElementDetailRepository, ElementDetailRepository>();
-
+builder.Services.AddScoped<ImportFplData>();
+builder.Services.AddSingleton<SchedulerConfigContext>();
 builder.Services.AddControllers();
-builder.Services.AddHostedService<PremierLeagueApiWorker>();
+
+builder.Services.AddQuartz();
+builder.Services.AddQuartzHostedService(
+    q => q.WaitForJobsToComplete = true
+);
+builder.Services.AddHostedService<SchedulerWorker>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+//var schedulerConfigContext = builder.Services.BuildServiceProvider().GetRequiredService<SchedulerConfigContext>();
+//schedulerConfigContext.StartScheduler();
+//schedulerConfigContext.RegisterJob<ImportFplDataJob>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -55,6 +67,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
 
 IMapper ConfigureMapper()
 {
