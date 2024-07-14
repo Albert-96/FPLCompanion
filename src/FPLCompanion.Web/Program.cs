@@ -5,7 +5,6 @@ using FPLCompanion.DataService.Abstractions;
 using FPLCompanion.DataService.Services;
 using FPLCompanion.Dependencies;
 using FPLCompanion.HostedServices;
-using FPLCompanion.HostedServices.Jobs;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 
@@ -28,6 +27,7 @@ builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IFixtureRepository, FixtureRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IElementDetailRepository, ElementDetailRepository>();
+builder.Services.AddScoped<IDreamTeamRepository, DreamTeamRepository>();
 builder.Services.AddScoped<ImportFplData>();
 builder.Services.AddSingleton<SchedulerConfigContext>();
 builder.Services.AddControllers();
@@ -43,10 +43,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-//var schedulerConfigContext = builder.Services.BuildServiceProvider().GetRequiredService<SchedulerConfigContext>();
-//schedulerConfigContext.StartScheduler();
-//schedulerConfigContext.RegisterJob<ImportFplDataJob>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -15,6 +15,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
         private readonly IFixtureRepository _fixtureRepository;
         private readonly IEventRepository _eventRepository;
         private readonly IElementDetailRepository _elementDetailRepository;
+        private readonly IDreamTeamRepository _dreamTeamRepository;
         private readonly IMapper _mapper;
 
         public ImportFplData(
@@ -24,6 +25,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
             IFixtureRepository fixtureRepository,
             IEventRepository eventRepository,
             IElementDetailRepository elementDetailRepository,
+            IDreamTeamRepository dreamTeamRepository,
             IMapper mapper)
         {
             _elementRepository = elementRepository;
@@ -32,6 +34,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
             _fixtureRepository = fixtureRepository;
             _eventRepository = eventRepository;
             _elementDetailRepository = elementDetailRepository;
+            _dreamTeamRepository = dreamTeamRepository;
             _mapper = mapper;
         }
 
@@ -66,6 +69,19 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
                 var fixtures = _mapper.Map<IEnumerable<FixtureDto>, IEnumerable<Fixture>>(deserializedFixture).ToList();
                 var fixtureTask = _fixtureRepository.UpdateMany(fixtures);
 
+                List<DreamTeam> dreamTeams = new List<DreamTeam>();
+                foreach (var @event in events)
+                {
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    response = await client.GetAsync($"{FPLConstants.FplDreamTeamApi}{@event.id}");
+                    var deserializedDreamTeam = JsonConvert.DeserializeObject<DreamTeamDto>(await response.Content.ReadAsStringAsync());
+                    var dreamTeam = _mapper.Map<DreamTeamDto, DreamTeam>(deserializedDreamTeam);
+                    dreamTeam.id = @event.id;
+                    dreamTeams.Add(dreamTeam);
+                }
+
+                var dreamTeamTask = _dreamTeamRepository.UpdateMany(dreamTeams);
+
                 List<ElementDetail> playerDetails = new List<ElementDetail>();
                 foreach (var player in players)
                 {
@@ -79,7 +95,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
 
                 var playerDetailTask = _elementDetailRepository.UpdateMany(playerDetails);
 
-                Task.WaitAll(elementTask, teamTask, elementTask, fixtureTask, eventTask, playerDetailTask);
+                Task.WaitAll(elementTask, teamTask, elementTask, fixtureTask, eventTask, playerDetailTask, dreamTeamTask);
 
                 return 1;
             }

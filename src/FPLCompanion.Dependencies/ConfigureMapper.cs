@@ -22,6 +22,9 @@ namespace FPLCompanion.Dependencies
             CreateMap<ElementDetailDto, ElementDetail>().ReverseMap();
             CreateMap<HistoryDto, History>().ReverseMap();
             CreateMap<HistoryPastDto, HistoryPast>().ReverseMap();
+            CreateMap<DreamTeamDto, DreamTeam>().ReverseMap();
+            CreateMap<TopPlayerDto, TopPlayer>().ReverseMap();
+            CreateMap<DreamElementDto, DreamElement>().ReverseMap();
         }
     }
 }
