@@ -2,16 +2,12 @@
 using FPLCompanion.Data.Entities;
 using FPLCompanion.DataService.Abstractions;
 using FPLCompanion.Dto;
-using MediatR;
 using Newtonsoft.Json;
 
 namespace FPLCompanion.ApplicationServices.Requests.General.Commands
 {
-    public class ImportFplData : IRequest<int>
-    {
-    }
 
-    public class ImportFplDataHandler : IRequestHandler<ImportFplData, int>
+    public class ImportFplData
     {
         private readonly IElementRepository _elementRepository;
         private readonly IElementTypeRepository _elementTypeRepository;
@@ -21,7 +17,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
         private readonly IElementDetailRepository _elementDetailRepository;
         private readonly IMapper _mapper;
 
-        public ImportFplDataHandler(
+        public ImportFplData(
             ITeamRepository teamRepository,
             IElementRepository elementRepository,
             IElementTypeRepository elementTypeRepository,
@@ -39,7 +35,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
             _mapper = mapper;
         }
 
-        public async Task<int> Handle(ImportFplData request, CancellationToken cancellationToken)
+        public async Task<int> Handle()
         {
             try
             {
@@ -47,7 +43,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
                 client.DefaultRequestHeaders.Accept.Clear();
 
                 var response = await client.GetAsync(FPLConstants.FplGeneralApi);
-                GeneralInfoDto deserializedGeneralInfo = JsonConvert.DeserializeObject<GeneralInfoDto>(await response.Content.ReadAsStringAsync(cancellationToken));
+                GeneralInfoDto deserializedGeneralInfo = JsonConvert.DeserializeObject<GeneralInfoDto>(await response.Content.ReadAsStringAsync());
                 var teams = _mapper.Map<IEnumerable<TeamDto>, IEnumerable<Team>>(deserializedGeneralInfo.teams).ToList();
                 var events = _mapper.Map<IEnumerable<EventDto>, IEnumerable<Event>>(deserializedGeneralInfo.events).ToList();
                 var elementTypes = _mapper.Map<IEnumerable<ElementTypeDto>, IEnumerable<ElementType>>(deserializedGeneralInfo.element_types).ToList();
@@ -66,7 +62,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
 
                 client.DefaultRequestHeaders.Accept.Clear();
                 response = await client.GetAsync(FPLConstants.FplFixturesApi);
-                var deserializedFixture = JsonConvert.DeserializeObject<List<FixtureDto>>(await response.Content.ReadAsStringAsync(cancellationToken));
+                var deserializedFixture = JsonConvert.DeserializeObject<List<FixtureDto>>(await response.Content.ReadAsStringAsync());
                 var fixtures = _mapper.Map<IEnumerable<FixtureDto>, IEnumerable<Fixture>>(deserializedFixture).ToList();
                 var fixtureTask = _fixtureRepository.UpdateMany(fixtures);
 
@@ -75,7 +71,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
                 {
                     client.DefaultRequestHeaders.Accept.Clear();
                     response = await client.GetAsync($"{FPLConstants.FplElementApi}{player.id}");
-                    var deserializedPlayerDetail = JsonConvert.DeserializeObject<ElementDetailDto>(await response.Content.ReadAsStringAsync(cancellationToken));
+                    var deserializedPlayerDetail = JsonConvert.DeserializeObject<ElementDetailDto>(await response.Content.ReadAsStringAsync());
                     var playerDetail = _mapper.Map<ElementDetailDto, ElementDetail>(deserializedPlayerDetail);
                     playerDetail.id = player.id;
                     playerDetails.Add(playerDetail);
