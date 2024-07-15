@@ -3,11 +3,8 @@ using FPLCompanion.Data.Entities;
 using FPLCompanion.DataService;
 using FPLCompanion.Dto;
 using MediatR;
-using MongoDB.Driver;
-using PrimeNGTableExtension;
 using PrimeNGTableExtension.Models;
 using FPLCompanion.DataService.Abstractions;
-using FPLCompanion.DataService.Services;
 
 namespace FPLCompanion.ApplicationServices.Requests.Player.Queries
 {

@@ -40,6 +40,11 @@ namespace FPLCompanion.DataService
         public DbSet<ElementDetail> ElementDetails { get; set; }
 
         /// <summary>
+        /// Dream Teams entity.
+        /// </summary>
+        public DbSet<DreamTeam> DreamTeams { get; set; }
+
+        /// <summary>
         /// EF Model Creator Function. 
         /// </summary>
         /// <param name="modelBuilder">EF Model builder.</param>
@@ -74,6 +79,11 @@ namespace FPLCompanion.DataService
             modelBuilder.Entity<ElementDetail>(e =>
             {
                 e.ToCollection("ElementDetail");
+                e.Property(p => p.id).HasElementName("_id");
+            });
+            modelBuilder.Entity<DreamTeam>(e =>
+            {
+                e.ToCollection("DreamTeam");
                 e.Property(p => p.id).HasElementName("_id");
             });
         }

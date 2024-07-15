@@ -1,5 +1,4 @@
-﻿using FPLCompanion.Data.Entities;
-using FPLCompanion.DataService.Abstractions;
+﻿using FPLCompanion.DataService.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -30,9 +29,14 @@ namespace FPLCompanion.DataService.Services
             return await table.FindAsync(id);
         }
 
-        public async ValueTask<IEnumerable<T>> GetAllAsync()
+        public async ValueTask<List<T>> GetAllAsync()
         {
             return await table.ToListAsync();
+        }
+
+        public async ValueTask<List<T>> GetFilterAsync(Expression<Func<T, bool>> expression)
+        {
+            return await table.Where(expression).ToListAsync();
         }
 
         public async Task InsertAsync(T insertRecord)
