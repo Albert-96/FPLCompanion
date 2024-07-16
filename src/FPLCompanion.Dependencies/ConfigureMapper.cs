@@ -18,12 +18,20 @@ namespace FPLCompanion.Dependencies
             CreateMap<FixturePlayerDto, FixturePlayer>().ReverseMap();
             CreateMap<EventDto, Event>().ReverseMap();
             CreateMap<ChipPlayDto, ChipPlay>().ReverseMap();
-            CreateMap<TopElementInfoDto, TopElementInfo>().ReverseMap();
+            CreateMap<TopElementInfoDto, TopElementInfo>()
+                .ForMember(
+                    dest => dest._id,
+                    p => p.MapFrom(src => src.id))
+                .ReverseMap();
             CreateMap<ElementDetailDto, ElementDetail>().ReverseMap();
             CreateMap<HistoryDto, History>().ReverseMap();
             CreateMap<HistoryPastDto, HistoryPast>().ReverseMap();
             CreateMap<DreamTeamDto, DreamTeam>().ReverseMap();
-            CreateMap<TopPlayerDto, TopPlayer>().ReverseMap();
+            CreateMap<TopPlayerDto, TopPlayer>()
+                .ForMember(
+                    dest => dest._id,
+                    p => p.MapFrom(src => src.id))
+                .ReverseMap();
             CreateMap<DreamElementDto, DreamElement>().ReverseMap();
         }
     }

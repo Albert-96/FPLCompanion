@@ -10,7 +10,7 @@ namespace FPLCompanion.Data.Entities
 
     public class TopElementInfo
     {
-        public int id { get; set; }
+        public int _id { get; set; }
         public int points { get; set; }
     }
 

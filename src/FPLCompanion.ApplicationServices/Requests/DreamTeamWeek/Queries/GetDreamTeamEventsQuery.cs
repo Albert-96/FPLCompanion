@@ -32,7 +32,6 @@ namespace FPLCompanion.ApplicationServices.Requests.DreamTeamWeek.Queries
 
             try
             {
-                var event1s = await EventRepository.GetAllAsync();
                 var dreamTeams = await DreamTeamRepository.GetAllAsync();
                 var events = await EventRepository.GetFilterAsync(x => dreamTeams.Any(y => y.id == x.id));
                 result = Mapper.Map<List<Event>, List<EventDto>>(events);
