@@ -10,13 +10,13 @@ namespace FPLCompanion.ApplicationServices.Requests.DreamTeamWeek.Queries
     {
     }
 
-    public class GetAllPlayerDataQueryHandler : IRequestHandler<GetDreamTeamEventsQuery, List<EventDto>>
+    public class GetDreamTeamEventsQueryHandler : IRequestHandler<GetDreamTeamEventsQuery, List<EventDto>>
     {
         private readonly IMapper Mapper;
         private IDreamTeamRepository DreamTeamRepository { get; set; }
         private IEventRepository EventRepository { get; set; }
 
-        public GetAllPlayerDataQueryHandler(
+        public GetDreamTeamEventsQueryHandler(
             IDreamTeamRepository dreamTeamRepository,
             IEventRepository eventRepository,
             IMapper mapper)

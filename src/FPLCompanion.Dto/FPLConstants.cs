@@ -7,5 +7,6 @@
         public static string FplElementApi = "https://fantasy.premierleague.com/api/element-summary/";
         public static string FplEventStatusApi = "https://fantasy.premierleague.com/api/event-status";
         public static string FplDreamTeamApi = "https://fantasy.premierleague.com/api/dream-team/";
+        public static string FplEventLiveApi = "https://fantasy.premierleague.com/api/event/{0}/live/";
     }
 }

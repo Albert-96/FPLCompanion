@@ -18,9 +18,9 @@
         public bool provisional_start_time { get; set; }
         public bool started { get; set; }
         public int team_a { get; set; }
-        public int team_a_score { get; set; }
+        public int? team_a_score { get; set; }
         public int team_h { get; set; }
-        public int team_h_score { get; set; }
+        public int? team_h_score { get; set; }
         public List<FixtureStatDto> stats { get; set; }
         public int team_h_difficulty { get; set; }
         public int team_a_difficulty { get; set; }

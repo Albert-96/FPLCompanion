@@ -79,7 +79,7 @@
         public int stop_event { get; set; }
     }
 
-    public class ElementStatDto
+    public class GeneralElementStatDto
     {
         public string label { get; set; }
         public string name { get; set; }
@@ -93,7 +93,7 @@
         public List<TeamDto> teams { get; set; }
         public int total_players { get; set; }
         public List<ElementDto> elements { get; set; }
-        public List<ElementStatDto> element_stats { get; set; }
+        public List<GeneralElementStatDto> element_stats { get; set; }
         public List<ElementTypeDto> element_types { get; set; }
     }
 }

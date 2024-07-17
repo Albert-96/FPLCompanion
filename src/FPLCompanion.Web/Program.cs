@@ -28,6 +28,7 @@ builder.Services.AddScoped<IFixtureRepository, FixtureRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IElementDetailRepository, ElementDetailRepository>();
 builder.Services.AddScoped<IDreamTeamRepository, DreamTeamRepository>();
+builder.Services.AddScoped<IEventElementRepository, EventElementRepository>();
 builder.Services.AddScoped<ImportFplData>();
 builder.Services.AddSingleton<SchedulerConfigContext>();
 builder.Services.AddControllers();

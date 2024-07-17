@@ -16,6 +16,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
         private readonly IEventRepository _eventRepository;
         private readonly IElementDetailRepository _elementDetailRepository;
         private readonly IDreamTeamRepository _dreamTeamRepository;
+        private readonly IEventElementRepository _eventElementRepository;
         private readonly IMapper _mapper;
 
         public ImportFplData(
@@ -26,6 +27,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
             IEventRepository eventRepository,
             IElementDetailRepository elementDetailRepository,
             IDreamTeamRepository dreamTeamRepository,
+            IEventElementRepository eventElementRepository,
             IMapper mapper)
         {
             _elementRepository = elementRepository;
@@ -35,6 +37,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
             _eventRepository = eventRepository;
             _elementDetailRepository = elementDetailRepository;
             _dreamTeamRepository = dreamTeamRepository;
+            _eventElementRepository = eventElementRepository;
             _mapper = mapper;
         }
 
@@ -95,7 +98,30 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
 
                 var playerDetailTask = _elementDetailRepository.UpdateMany(playerDetails);
 
+                List<EventElement> eventDetails = new List<EventElement>();
+                foreach (var @event in events)
+                {
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    var url = String.Format(FPLConstants.FplEventLiveApi, @event.id);
+                    response = await client.GetAsync(url);
+                    var deserializedEventDetail = JsonConvert.DeserializeObject<EventDetailDto>(await response.Content.ReadAsStringAsync());
+                    var eventDetail = _mapper.Map<EventDetailDto, EventDetail>(deserializedEventDetail);
+                    eventDetail.id = @event.id;
+                    var eventElements = eventDetail.elements
+                        .Where(x => x.stats.minutes > 0)
+                        .Select(x =>
+                        {
+                            x.eventId = @event.id;
+                            return x;
+                        })
+                        .ToList();
+                    eventDetails.AddRange(eventElements);
+                }
+
+                var eventDetailTask = _eventElementRepository.UpdateMany(eventDetails);
+
                 Task.WaitAll(elementTask, teamTask, elementTask, fixtureTask, eventTask, playerDetailTask, dreamTeamTask);
+                await eventDetailTask;
 
                 return 1;
             }

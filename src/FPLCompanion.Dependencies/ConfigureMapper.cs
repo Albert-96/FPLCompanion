@@ -10,6 +10,7 @@ namespace FPLCompanion.Dependencies
         public ConfigureMapper()
         {
             CreateMap<ElementDto, Element>().ReverseMap();
+            CreateMap<PlayerDto, Element>().ReverseMap();
             CreateMap<ElementDto, ElementAggregate>().ReverseMap();
             CreateMap<TeamDto, Team>().ReverseMap();
             CreateMap<ElementTypeDto, ElementType>().ReverseMap();
@@ -33,6 +34,16 @@ namespace FPLCompanion.Dependencies
                     p => p.MapFrom(src => src.id))
                 .ReverseMap();
             CreateMap<DreamElementDto, DreamElement>().ReverseMap();
+            CreateMap<EventDetailDto, EventDetail>().ReverseMap();
+            CreateMap<EventElementDto, EventElement>()
+                .ForMember(
+                    dest => dest.elementId,
+                    p => p.MapFrom(src => src.id)
+                ).ReverseMap();
+            CreateMap<ExplainDto, Explain>().ReverseMap();
+            CreateMap<ElementStatDto, ElementStat>().ReverseMap();
+            CreateMap<ExplainStatDto, ExplainStat>().ReverseMap();
+            CreateMap<ElementFixtureDto, ElementFixture>().ReverseMap();
         }
     }
 }

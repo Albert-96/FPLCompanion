@@ -2,6 +2,24 @@
 
 namespace FPLCompanion.Data.Entities
 {
+    public class ElementFixture
+    {
+        public int id { get; set; }
+        public int code { get; set; }
+        public int team_h { get; set; }
+        public int? team_h_score { get; set; }
+        public int team_a { get; set; }
+        public int? team_a_score { get; set; }
+        public int @event { get; set; }
+        public bool finished { get; set; }
+        public int minutes { get; set; }
+        public bool provisional_start_time { get; set; }
+        public DateTime kickoff_time { get; set; }
+        public string event_name { get; set; }
+        public bool is_home { get; set; }
+        public int difficulty { get; set; }
+    }
+
     public class History
     {
         public int element { get; set; }
@@ -77,7 +95,7 @@ namespace FPLCompanion.Data.Entities
     {
         [BsonId]
         public int id { get; set; }
-        public List<int> fixtures { get; set; }
+        public List<ElementFixture> fixtures { get; set; }
         public List<History> history { get; set; }
         public List<HistoryPast> history_past { get; set; }
     }
