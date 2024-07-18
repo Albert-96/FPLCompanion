@@ -30,14 +30,14 @@ builder.Services.AddScoped<IElementDetailRepository, ElementDetailRepository>();
 builder.Services.AddScoped<IDreamTeamRepository, DreamTeamRepository>();
 builder.Services.AddScoped<IEventElementRepository, EventElementRepository>();
 builder.Services.AddScoped<ImportFplData>();
-builder.Services.AddSingleton<SchedulerConfigContext>();
+//builder.Services.AddSingleton<SchedulerConfigContext>();
 builder.Services.AddControllers();
 
-builder.Services.AddQuartz();
-builder.Services.AddQuartzHostedService(
-    q => q.WaitForJobsToComplete = true
-);
-builder.Services.AddHostedService<SchedulerWorker>();
+//builder.Services.AddQuartz();
+//builder.Services.AddQuartzHostedService(
+//    q => q.WaitForJobsToComplete = true
+//);
+//builder.Services.AddHostedService<SchedulerWorker>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

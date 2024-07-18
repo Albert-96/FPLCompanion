@@ -33,7 +33,7 @@
         public int? most_selected { get; set; }
         public int? most_transferred_in { get; set; }
         public int? top_element { get; set; }
-        public TopElementInfoDto top_element_info { get; set; }
+        public TopElementInfoDto? top_element_info { get; set; }
         public int transfers_made { get; set; }
         public int? most_captained { get; set; }
         public int? most_vice_captained { get; set; }

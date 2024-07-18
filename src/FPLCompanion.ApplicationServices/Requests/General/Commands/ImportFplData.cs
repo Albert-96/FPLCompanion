@@ -69,7 +69,7 @@ namespace FPLCompanion.ApplicationServices.Requests.General.Commands
                 client.DefaultRequestHeaders.Accept.Clear();
                 response = await client.GetAsync(FPLConstants.FplFixturesApi);
                 var deserializedFixture = JsonConvert.DeserializeObject<List<FixtureDto>>(await response.Content.ReadAsStringAsync());
-                var fixtures = _mapper.Map<IEnumerable<FixtureDto>, IEnumerable<Fixture>>(deserializedFixture).ToList();
+                var fixtures = _mapper.Map<IEnumerable<FixtureDto>, IEnumerable<FPLCompanion.Data.Entities.Fixture>>(deserializedFixture).ToList();
                 var fixtureTask = _fixtureRepository.UpdateMany(fixtures);
 
                 List<DreamTeam> dreamTeams = new List<DreamTeam>();

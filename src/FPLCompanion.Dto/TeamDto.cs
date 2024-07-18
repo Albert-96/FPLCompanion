@@ -4,7 +4,7 @@
     {
         public int code { get; set; }
         public int draw { get; set; }
-        public string form { get; set; }
+        public string? form { get; set; }
         public int id { get; set; }
         public int loss { get; set; }
         public string name { get; set; }

@@ -9,7 +9,7 @@ namespace FPLCompanion.Data.Entities
         public int id { get; set; }
         public int code { get; set; }
         public int draw { get; set; }
-        public string form { get; set; }
+        public string? form { get; set; }
         public int loss { get; set; }
         public string name { get; set; }
         public int played { get; set; }
@@ -17,7 +17,7 @@ namespace FPLCompanion.Data.Entities
         public int position { get; set; }
         public string short_name { get; set; }
         public int strength { get; set; }
-        public string team_division { get; set; }
+        public string? team_division { get; set; }
         public bool unavailable { get; set; }
         public int win { get; set; }
         public int strength_overall_home { get; set; }

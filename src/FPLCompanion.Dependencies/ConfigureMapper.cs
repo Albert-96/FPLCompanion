@@ -2,6 +2,7 @@
 using FPLCompanion.Data.Entities;
 using FPLCompanion.Data.ViewModels;
 using FPLCompanion.Dto;
+using FPLCompanion.Dto.ViewModels;
 
 namespace FPLCompanion.Dependencies
 {
@@ -13,8 +14,10 @@ namespace FPLCompanion.Dependencies
             CreateMap<PlayerDto, Element>().ReverseMap();
             CreateMap<ElementDto, ElementAggregate>().ReverseMap();
             CreateMap<TeamDto, Team>().ReverseMap();
+            CreateMap<TeamViewModelDto, Team>().ReverseMap();
             CreateMap<ElementTypeDto, ElementType>().ReverseMap();
             CreateMap<FixtureDto, Fixture>().ReverseMap();
+            CreateMap<FixtureViewModelDto, Fixture>().ReverseMap();
             CreateMap<FixtureStatDto, FixtureStat>().ReverseMap();
             CreateMap<FixturePlayerDto, FixturePlayer>().ReverseMap();
             CreateMap<EventDto, Event>().ReverseMap();

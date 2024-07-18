@@ -7,7 +7,7 @@ namespace FPLCompanion.Controllers
     public class FixtureController : BaseController
     {
         [HttpGet]
-        [Route("fixture/event/{id}")]
+        [Route("fixture/event")]
         public async Task<IActionResult> GetEventFixtures(int id)
         {
             return this.Ok(await this.Mediator.Send(new GetEventFixtureQuery { eventId = id }));
