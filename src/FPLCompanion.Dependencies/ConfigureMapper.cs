@@ -11,6 +11,7 @@ namespace FPLCompanion.Dependencies
         public ConfigureMapper()
         {
             CreateMap<ElementDto, Element>().ReverseMap();
+            CreateMap<Element, PlayerDetailViewDto>(MemberList.Source);
             CreateMap<PlayerDto, Element>().ReverseMap();
             CreateMap<ElementDto, ElementAggregate>().ReverseMap();
             CreateMap<TeamDto, Team>().ReverseMap();
@@ -28,8 +29,11 @@ namespace FPLCompanion.Dependencies
                     p => p.MapFrom(src => src.id))
                 .ReverseMap();
             CreateMap<ElementDetailDto, ElementDetail>().ReverseMap();
+            CreateMap<ElementDetail, PlayerDetailViewDto>(MemberList.Source);
             CreateMap<HistoryDto, History>().ReverseMap();
+            CreateMap<HistoryViewDto, History>().ReverseMap();
             CreateMap<HistoryPastDto, HistoryPast>().ReverseMap();
+            CreateMap<HistoryPastViewDto, HistoryPast>().ReverseMap();
             CreateMap<DreamTeamDto, DreamTeam>().ReverseMap();
             CreateMap<TopPlayerDto, TopPlayer>()
                 .ForMember(
@@ -46,7 +50,16 @@ namespace FPLCompanion.Dependencies
             CreateMap<ExplainDto, Explain>().ReverseMap();
             CreateMap<ElementStatDto, ElementStat>().ReverseMap();
             CreateMap<ExplainStatDto, ExplainStat>().ReverseMap();
-            CreateMap<ElementFixtureDto, ElementFixture>().ReverseMap();
+            CreateMap<ElementFixtureDto, ElementFixture>()
+                .ForMember(
+                    dest => dest._id,
+                    p => p.MapFrom(src => src.id))
+                .ReverseMap();
+            CreateMap<ElementFixtureViewModelDto, ElementFixture>()
+                .ForMember(
+                    dest => dest._id,
+                    p => p.MapFrom(src => src.id))
+                .ReverseMap();
         }
     }
 }

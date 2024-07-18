@@ -14,8 +14,8 @@ namespace FPLCompanion.ApplicationServices.Requests.Fixture.Queries
     public class GetEventFixtureQueryHandler : IRequestHandler<GetEventFixtureQuery, List<FixtureViewModelDto>>
     {
         private readonly IMapper Mapper;
-        private IFixtureRepository FixtureRepository { get; set; }
-        private ITeamRepository TeamRepository { get; set; }
+        private IFixtureRepository FixtureRepository;
+        private ITeamRepository TeamRepository;
 
         public GetEventFixtureQueryHandler(
             IFixtureRepository fixtureRepository,

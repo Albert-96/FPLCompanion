@@ -16,6 +16,13 @@ namespace FPLCompanion.Controllers
             return this.Ok(await this.Mediator.Send(new GetAllPlayerDataQuery { gridParams = gridParams}));
         }
 
+        [HttpGet]
+        [Route("player")]
+        public async Task<IActionResult> GetPlayerDetail(int id)
+        {
+            return this.Ok(await this.Mediator.Send(new GetPlayerDataQuery { elementId = id }));
+        }
+
         //[HttpGet]
         //[Route("player/defenders")]
         //public async Task<IActionResult> GetDefenders(DataSourceLoadOptions loadOptions)

@@ -2,9 +2,9 @@
 {
     public class PlayerDetailViewDto
     {
-        public string? _Id { get; set; }
+        public int id { get; set; }
         public int? code { get; set; }
-        public TeamViewModelDto? team { get; set; }
+        public TeamViewModelDto? teamDetail { get; set; }
         public string positionInfo { get; set; }
         public string first_name { get; set; }
         public string second_name { get; set; }

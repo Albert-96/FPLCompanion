@@ -4,7 +4,7 @@ namespace FPLCompanion.Data.Entities
 {
     public class ElementFixture
     {
-        public int id { get; set; }
+        public int _id { get; set; }
         public int code { get; set; }
         public int team_h { get; set; }
         public int? team_h_score { get; set; }
